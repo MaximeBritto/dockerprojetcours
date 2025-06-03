@@ -1,0 +1,66 @@
+# Fichiers système
+.DS_Store
+Thumbs.db
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Répertoires de dépendances
+node_modules/
+jspm_packages/
+bower_components/
+
+# Dossiers de build et de sortie
+.next/
+out/
+build/
+dist/
+coverage/
+.nyc_output/
+
+# Fichiers d'environnement locaux
+.env
+.env.local
+.env.*.local
+# Ne pas commiter les variables d'environnement de production si elles contiennent des secrets.
+# .env.production
+
+# Fichiers d'IDE
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Données de base de données locales (si vous en aviez en dehors de Docker)
+# Par exemple, si vous utilisiez SQLite localement pour des tests
+# *.sqlite
+# *.sqlite3
+
+# Fichiers spécifiques à Docker que vous ne voulez pas toujours commiter (optionnel)
+# Dockerfile (si géré par un autre process, peu probable ici)
+# docker-compose.yml (si des versions locales diffèrent beaucoup, peu probable ici)
+
+# Cache Docker
+.docker/
+
+# Fichiers spécifiques à Windows
+desktop.ini
+
+# Cache Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+
+# Fichiers de test et de rapport
+/tests/coverage/
+/tests/reports/
+junit.xml 
