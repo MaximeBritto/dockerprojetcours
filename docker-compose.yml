@@ -5,14 +5,12 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:3001/api
     ports:
       - "3000:3000"
     environment:
-      # Exemple de variable d'environnement pour le frontend
-      # NEXT_PUBLIC_API_URL: http://localhost:3001/api
-      # Décommentez et ajustez si votre frontend doit connaître l'URL du backend
-      # Si le backend est accessible via le nom de service docker, ce serait plutôt:
-      NEXT_PUBLIC_API_URL: http://backend:3001/api
+      NEXT_PUBLIC_API_URL: http://localhost:3001/api
     depends_on:
       - backend
     networks:
@@ -27,41 +25,29 @@ services:
     environment:
       DATABASE_URL: postgresql://user:password@db:5432/mydatabase
       PORT: 3001
-      # Ajoutez d'autres variables d'environnement nécessaires à votre backend ici
     depends_on:
       - db
-    volumes:
-      # Monter le code source du backend pour le développement (optionnel)
-      # Peut être utile pour voir les changements sans reconstruire l'image
-      # ATTENTION: node_modules ne doit PAS être monté depuis l'hôte dans le conteneur
-      # Une solution est d'utiliser un volume anonyme pour node_modules dans le conteneur :
-      # - ./backend:/usr/src/app
-      # - /usr/src/app/node_modules
-      # Pour la production, il est généralement préférable de ne pas monter le code source.
-      - ./backend:/usr/src/app # Exemple de montage pour développement
-      - /usr/src/app/node_modules # Pour éviter d'écraser les node_modules du conteneur
     networks:
       - app-network
 
   db:
-    image: postgres:15-alpine # Utilisation d'une image PostgreSQL officielle
+    image: postgres:15-alpine
     ports:
-      - "5432:5432" # Exposer le port PostgreSQL à l'hôte (utile pour le débogage)
+      - "5434:5432"
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
       POSTGRES_DB: mydatabase
-      # PGDATA: /var/lib/postgresql/data/pgdata # Optionnel: pour changer le lieu de stockage des données
     volumes:
-      - postgres_data:/var/lib/postgresql/data # Volume nommé pour la persistance des données
-      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql # Script d'initialisation
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - app-network
     restart: unless-stopped
 
 volumes:
-  postgres_data: # Définit un volume nommé pour la persistance des données de la BDD
+  postgres_data:
 
 networks:
-  app-network: # Définit un réseau personnalisé pour que les services communiquent
+  app-network:
     driver: bridge 

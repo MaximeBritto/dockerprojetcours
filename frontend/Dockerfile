@@ -1,6 +1,11 @@
 # Étape 1: Build de l'application
 FROM node:18-alpine AS builder
 
+# Déclarer l'argument de build
+ARG NEXT_PUBLIC_API_URL
+# Le rendre disponible comme ENV
+ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+
 # Définir le répertoire de travail
 WORKDIR /app
 
@@ -14,8 +19,8 @@ RUN npm install
 # Copier le reste du code de l'application
 COPY . .
 
-# Construire l'application Next.js
-RUN npm run build
+# Construire l'application Next.js, en s'assurant que la variable est présente
+RUN NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL} npm run build
 
 # Étape 2: Servir l'application avec Node.js en mode production
 FROM node:18-alpine
